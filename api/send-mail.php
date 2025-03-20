@@ -18,7 +18,7 @@ $MJ_APIKEY_PRIVATE = $_ENV['MJ_APIKEY_PRIVATE'];
 check_retell_signature();
 
 $json = file_get_contents('php://input');
-$data = json_decode($json, true)['args'];
+$data = json_decode($json, true)['args'] ?? null;
 
 $required_fields = ['toEmail', 'fromEmail', 'fromName', 'emailSubject', 'emailHtml'];
 
@@ -59,6 +59,6 @@ $response = curl_exec($ch);
 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-return ["status" => $http_code, "response" => json_decode($response, true)];
+echo json_encode(["status" => $http_code, "response" => json_decode($response, true)]);
 
 ?>
