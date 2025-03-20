@@ -12,7 +12,7 @@ check_retell_signature();
 $json = file_get_contents('php://input');
 $data = json_decode($json, true)['args'] ?? null;
 
-$required_fields = ['service', 'spaces', 'email', 'firstName', 'name', 'phone'];
+$required_fields = ['service', 'spaces', 'email', 'firstName', 'name', 'phone', 'customFieldsValues'];
 
 check_required($data, $required_fields);
 
@@ -22,6 +22,7 @@ $email = $data['email'];
 $first_name = $data['firstName'];
 $name = $data['name'];
 $phone = $data['phone'];
+$customFieldsValues = $data['customFieldsValues'];
 
 $boostUrl = get_boost_url($service);
 
@@ -35,7 +36,7 @@ $data = [
     "firstname" => $first_name,
     "type" => "person",
     "phone" => $phone,
-    "customFieldsValues" => []
+    "customFieldsValues" => $customFieldsValues
 ];
 // Set up cURL request
 $ch = curl_init($url);
@@ -51,9 +52,10 @@ $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-if ($httpCode !== 200) {
+if ($httpCode !== 200 && $httpCode !== 201) {
     http_response_code($httpCode);
     die(json_encode(["error" => "Request failed", "response" => $response]));
 }
-return json_decode($response, true);
+
+echo $response;
 ?>
