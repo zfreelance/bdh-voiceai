@@ -18,7 +18,7 @@ $MJ_APIKEY_PRIVATE = $_ENV['MJ_APIKEY_PRIVATE'];
 check_retell_signature();
 
 $json = file_get_contents('php://input');
-$data = json_decode($json, true);
+$data = json_decode($json, true)['args'];
 
 $required_fields = ['toEmail', 'fromEmail', 'fromName', 'emailSubject', 'emailHtml'];
 
