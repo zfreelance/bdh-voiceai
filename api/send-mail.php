@@ -10,8 +10,8 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-$MJ_APIKEY_PUBLIC = $_ENV['MJ_APIKEY_PUBLIC'];
-$MJ_APIKEY_PRIVATE = $_ENV['MJ_APIKEY_PRIVATE'];
+$MJ_APIKEY_PUBLIC = env(key: 'MJ_APIKEY_PUBLIC');
+$MJ_APIKEY_PRIVATE = env('MJ_APIKEY_PRIVATE');
 
 
 //

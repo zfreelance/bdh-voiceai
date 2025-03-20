@@ -2,16 +2,16 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 // env vars
-
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-$ENV = $_ENV['ENV'];
-$RETELL_IP_ADDRESS = $_ENV['RETELL_IP_ADDRESS'];
-
 //
+function env($key, $default = 'localhost')
+{
+    return $_ENV[$key] ?? getenv($key) ?? $default;
+}
 
 function getTimestamp()
 {
@@ -31,8 +31,8 @@ function check_required($data, $required_fields)
 
 function check_retell_signature(): void
 {
-    global $ENV;
-    global $RETELL_IP_ADDRESS;
+    $ENV = env('ENV');
+    $RETELL_IP_ADDRESS = env('RETELL_IP_ADDRESS');
 
     if ($ENV === "development") {
         return;
