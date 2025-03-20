@@ -8,7 +8,7 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-$RETELL_APIKEY_PRIVATE = $_ENV['RETELL_APIKEY_PRIVATE'];
+$RETELL_IP_ADDRESS = $_ENV['RETELL_IP_ADDRESS'];
 
 //
 
@@ -30,23 +30,12 @@ function check_required($data, $required_fields)
 
 function check_retell_signature(): void
 {
-    $headers = getallheaders();
+    global $RETELL_IP_ADDRESS;
 
-    $signature_header = $headers['X-Retell-Signature'] ?? null;
-    global $RETELL_APIKEY_PRIVATE;
+    $client_ip = $_SERVER['REMOTE_ADDR'] ?? null;
 
-    $payload = file_get_contents('php://input');
-
-    if (!$RETELL_APIKEY_PRIVATE || !$signature_header) {
-        http_response_code(403);
-        die(json_encode(["error" => "Missing API key or signature"]));
-    }
-
-    $expected_signature = hash_hmac('sha256', $payload, $RETELL_APIKEY_PRIVATE);
-
-    if (!hash_equals($expected_signature, $signature_header)) {
-        http_response_code(403);
-        die(json_encode(["error" => "Invalid signature"]));
+    if (!$client_ip || $client_ip !== $RETELL_IP_ADDRESS) {
+        die(json_encode(["error" => "Unauthorized request. IP mismatch."]));
     }
 }
 ?>
