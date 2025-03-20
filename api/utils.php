@@ -32,7 +32,7 @@ function check_retell_signature(): void
 {
     $headers = getallheaders();
 
-    $signature_header = $headers['HTTP_X_RETELL_SIGNATURE'] ?? null;
+    $signature_header = $headers['X-Retell-Signature'] ?? null;
     global $RETELL_APIKEY_PRIVATE;
 
     $payload = file_get_contents('php://input');
