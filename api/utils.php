@@ -30,8 +30,10 @@ function check_required($data, $required_fields)
 
 function check_retell_signature(): void
 {
+    $headers = getallheaders();
+
     $api_key = $RETELL_APIKEY_PRIVATE ?? null;
-    $signature_header = $_SERVER['HTTP_X_RETELL_SIGNATURE'] ?? null;
+    $signature_header = $headers['HTTP_X_RETELL_SIGNATURE'] ?? null;
 
     $payload = file_get_contents('php://input');
 

@@ -15,7 +15,6 @@ $MJ_APIKEY_PRIVATE = $_ENV['MJ_APIKEY_PRIVATE'];
 
 
 //
-
 check_retell_signature();
 
 $json = file_get_contents('php://input');
