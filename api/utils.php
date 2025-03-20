@@ -32,17 +32,17 @@ function check_retell_signature(): void
 {
     $headers = getallheaders();
 
-    $api_key = $RETELL_APIKEY_PRIVATE ?? null;
     $signature_header = $headers['HTTP_X_RETELL_SIGNATURE'] ?? null;
+    global $RETELL_APIKEY_PRIVATE;
 
     $payload = file_get_contents('php://input');
 
-    if (!$api_key || !$signature_header) {
+    if (!$RETELL_APIKEY_PRIVATE || !$signature_header) {
         http_response_code(403);
         die(json_encode(["error" => "Missing API key or signature"]));
     }
 
-    $expected_signature = hash_hmac('sha256', $payload, $api_key);
+    $expected_signature = hash_hmac('sha256', $payload, $RETELL_APIKEY_PRIVATE);
 
     if (!hash_equals($expected_signature, $signature_header)) {
         http_response_code(403);
