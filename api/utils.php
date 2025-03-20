@@ -8,6 +8,7 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
+$ENV = $_ENV['ENV'];
 $RETELL_IP_ADDRESS = $_ENV['RETELL_IP_ADDRESS'];
 
 //
@@ -30,7 +31,12 @@ function check_required($data, $required_fields)
 
 function check_retell_signature(): void
 {
+    global $ENV;
     global $RETELL_IP_ADDRESS;
+
+    if ($ENV === "development") {
+        return;
+    }
 
     $client_ip = $_SERVER['REMOTE_ADDR'] ?? null;
 
