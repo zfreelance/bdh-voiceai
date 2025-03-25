@@ -27,7 +27,7 @@ $required_fields = ['message'];
 
 check_required($args, $required_fields);
 
-$message = $data['message'];
+$message = $args['message'];
 $to_number = $data['call']['from_number'];
 
 $client = new Client($TW_ACCOUNT_SID, $TW_AUTH_TOKEN);
